@@ -15,26 +15,26 @@ readonly S=(
 )
 
 readonly K=(
-	16#d76aa478 16#e8c7b756 16#242070db 16#c1bdceee
-	16#f57c0faf 16#4787c62a 16#a8304613 16#fd469501
-	16#698098d8 16#8b44f7af 16#ffff5bb1 16#895cd7be
-	16#6b901122 16#fd987193 16#a679438e 16#49b40821
-	16#f61e2562 16#c040b340 16#265e5a51 16#e9b6c7aa
-	16#d62f105d 16#02441453 16#d8a1e681 16#e7d3fbc8
-	16#21e1cde6 16#c33707d6 16#f4d50d87 16#455a14ed
-	16#a9e3e905 16#fcefa3f8 16#676f02d9 16#8d2a4c8a
-	16#fffa3942 16#8771f681 16#6d9d6122 16#fde5380c
-	16#a4beea44 16#4bdecfa9 16#f6bb4b60 16#bebfbc70
-	16#289b7ec6 16#eaa127fa 16#d4ef3085 16#04881d05
-	16#d9d4d039 16#e6db99e5 16#1fa27cf8 16#c4ac5665
-	16#f4292244 16#432aff97 16#ab9423a7 16#fc93a039
-	16#655b59c3 16#8f0ccc92 16#ffeff47d 16#85845dd1
-	16#6fa87e4f 16#fe2ce6e0 16#a3014314 16#4e0811a1
-	16#f7537e82 16#bd3af235 16#2ad7d2bb 16#eb86d391
+	0xd76aa478 0xe8c7b756 0x242070db 0xc1bdceee
+	0xf57c0faf 0x4787c62a 0xa8304613 0xfd469501
+	0x698098d8 0x8b44f7af 0xffff5bb1 0x895cd7be
+	0x6b901122 0xfd987193 0xa679438e 0x49b40821
+	0xf61e2562 0xc040b340 0x265e5a51 0xe9b6c7aa
+	0xd62f105d 0x02441453 0xd8a1e681 0xe7d3fbc8
+	0x21e1cde6 0xc33707d6 0xf4d50d87 0x455a14ed
+	0xa9e3e905 0xfcefa3f8 0x676f02d9 0x8d2a4c8a
+	0xfffa3942 0x8771f681 0x6d9d6122 0xfde5380c
+	0xa4beea44 0x4bdecfa9 0xf6bb4b60 0xbebfbc70
+	0x289b7ec6 0xeaa127fa 0xd4ef3085 0x04881d05
+	0xd9d4d039 0xe6db99e5 0x1fa27cf8 0xc4ac5665
+	0xf4292244 0x432aff97 0xab9423a7 0xfc93a039
+	0x655b59c3 0x8f0ccc92 0xffeff47d 0x85845dd1
+	0x6fa87e4f 0xfe2ce6e0 0xa3014314 0x4e0811a1
+	0xf7537e82 0xbd3af235 0x2ad7d2bb 0xeb86d391
 )
 
 # Used to mask the lower 32 bit of an integer.
-readonly MASK=16#ffffffff
+readonly MASK=0xffffffff
 
 # ------------------------------------------------------------------------------
 # Global state
@@ -43,7 +43,7 @@ readonly MASK=16#ffffffff
 eof=0 # 1 once EOF has been reached.
 len=0 # length of read input (without padding).
 
-state=(16#67452301 16#efcdab89 16#98badcfe 16#10325476)
+state=(0x67452301 0xefcdab89 0x98badcfe 0x10325476)
 
 # ------------------------------------------------------------------------------
 # Usage: rotate_left [NUM] [N]
@@ -160,10 +160,10 @@ md5_finish() {
 
 md5_digest() {
 	for i in {0..3}; do
-		printf '%02x' $((  state[i] & 16#000000ff ))
-		printf '%02x' $(( (state[i] & 16#0000ff00) >> 8 ))
-		printf '%02x' $(( (state[i] & 16#00ff0000) >> 16 ))
-		printf '%02x' $(( (state[i] & 16#ff000000) >> 24 ))
+		printf '%02x' $((  state[i] & 0x000000ff ))
+		printf '%02x' $(( (state[i] & 0x0000ff00) >> 8 ))
+		printf '%02x' $(( (state[i] & 0x00ff0000) >> 16 ))
+		printf '%02x' $(( (state[i] & 0xff000000) >> 24 ))
 	done
 	echo
 }
@@ -200,7 +200,7 @@ read_byte() {
 		((len++))
 	else
 		# Output 0x80 at EOF and 0x00 afterwards.
-		echo $(( (1 - eof) * 16#80 ))
+		echo $(( (1 - eof) * 0x80 ))
 		eof=1
 	fi
 
