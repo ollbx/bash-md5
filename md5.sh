@@ -176,7 +176,7 @@ md5_digest() {
 # ------------------------------------------------------------------------------
 
 into_word() {
-        echo $(($1 + ($2 << 8) + ($3 << 16) + ($4 << 24)))
+	echo $(($1 + ($2 << 8) + ($3 << 16) + ($4 << 24)))
 }
 
 # ------------------------------------------------------------------------------
@@ -193,7 +193,9 @@ read_byte() {
 	# Note `LC_ALL=C` prevents read from trying to make sense of UTF-8
 	# sequences etc.
 	if LC_ALL=C IFS= read -rd '' -n 1 chr; then
-		# Echo the byte value.
+		# Echo the byte value. Note: when `read` encounters a null byte
+		# it will returns an empty string. `printf "%d" "'"` will then
+		# return 0.
 		printf '%d' "'${chr}"
 		((len++))
 	else
