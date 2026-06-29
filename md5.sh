@@ -8,29 +8,29 @@ if [[ $1 = '-h' || $1 = '--help' ]]; then
 fi
 
 readonly S=(
-        7 12 17 22 7 12 17 22 7 12 17 22 7 12 17 22
-        5  9 14 20 5  9 14 20 5  9 14 20 5  9 14 20
-        4 11 16 23 4 11 16 23 4 11 16 23 4 11 16 23
-        6 10 15 21 6 10 15 21 6 10 15 21 6 10 15 21
+	7 12 17 22 7 12 17 22 7 12 17 22 7 12 17 22
+	5  9 14 20 5  9 14 20 5  9 14 20 5  9 14 20
+	4 11 16 23 4 11 16 23 4 11 16 23 4 11 16 23
+	6 10 15 21 6 10 15 21 6 10 15 21 6 10 15 21
 )
 
 readonly K=(
-        16#d76aa478 16#e8c7b756 16#242070db 16#c1bdceee
-        16#f57c0faf 16#4787c62a 16#a8304613 16#fd469501
-        16#698098d8 16#8b44f7af 16#ffff5bb1 16#895cd7be
-        16#6b901122 16#fd987193 16#a679438e 16#49b40821
-        16#f61e2562 16#c040b340 16#265e5a51 16#e9b6c7aa
-        16#d62f105d 16#02441453 16#d8a1e681 16#e7d3fbc8
-        16#21e1cde6 16#c33707d6 16#f4d50d87 16#455a14ed
-        16#a9e3e905 16#fcefa3f8 16#676f02d9 16#8d2a4c8a
-        16#fffa3942 16#8771f681 16#6d9d6122 16#fde5380c
-        16#a4beea44 16#4bdecfa9 16#f6bb4b60 16#bebfbc70
-        16#289b7ec6 16#eaa127fa 16#d4ef3085 16#04881d05
-        16#d9d4d039 16#e6db99e5 16#1fa27cf8 16#c4ac5665
-        16#f4292244 16#432aff97 16#ab9423a7 16#fc93a039
-        16#655b59c3 16#8f0ccc92 16#ffeff47d 16#85845dd1
-        16#6fa87e4f 16#fe2ce6e0 16#a3014314 16#4e0811a1
-        16#f7537e82 16#bd3af235 16#2ad7d2bb 16#eb86d391
+	16#d76aa478 16#e8c7b756 16#242070db 16#c1bdceee
+	16#f57c0faf 16#4787c62a 16#a8304613 16#fd469501
+	16#698098d8 16#8b44f7af 16#ffff5bb1 16#895cd7be
+	16#6b901122 16#fd987193 16#a679438e 16#49b40821
+	16#f61e2562 16#c040b340 16#265e5a51 16#e9b6c7aa
+	16#d62f105d 16#02441453 16#d8a1e681 16#e7d3fbc8
+	16#21e1cde6 16#c33707d6 16#f4d50d87 16#455a14ed
+	16#a9e3e905 16#fcefa3f8 16#676f02d9 16#8d2a4c8a
+	16#fffa3942 16#8771f681 16#6d9d6122 16#fde5380c
+	16#a4beea44 16#4bdecfa9 16#f6bb4b60 16#bebfbc70
+	16#289b7ec6 16#eaa127fa 16#d4ef3085 16#04881d05
+	16#d9d4d039 16#e6db99e5 16#1fa27cf8 16#c4ac5665
+	16#f4292244 16#432aff97 16#ab9423a7 16#fc93a039
+	16#655b59c3 16#8f0ccc92 16#ffeff47d 16#85845dd1
+	16#6fa87e4f 16#fe2ce6e0 16#a3014314 16#4e0811a1
+	16#f7537e82 16#bd3af235 16#2ad7d2bb 16#eb86d391
 )
 
 # Used to mask the lower 32 bit of an integer.
@@ -53,9 +53,9 @@ state=(16#67452301 16#efcdab89 16#98badcfe 16#10325476)
 
 rotate_left() {
 	# Note: only `lhs` can overflow into 64 bit.
-        local lhs=$((($1 << $2) & MASK))
-        local rhs=$(($1 >> (32 - $2)))
-        echo $((lhs | rhs))
+	local lhs=$((($1 << $2) & MASK))
+	local rhs=$(($1 >> (32 - $2)))
+	echo $((lhs | rhs))
 }
 
 # ------------------------------------------------------------------------------
@@ -73,44 +73,44 @@ md5_step() {
 		exit 1
 	fi
 
-        local A=${state[0]}
-        local B=${state[1]}
-        local C=${state[2]}
-        local D=${state[3]}
-        local E=0
-        local j=0
+	local A=${state[0]}
+	local B=${state[1]}
+	local C=${state[2]}
+	local D=${state[3]}
+	local E=0
+	local j=0
 
-        for i in {0..63}; do
-                case $((i / 16)) in
-                        0)
+	for i in {0..63}; do
+		case $((i / 16)) in
+			0)
 				local NB=$((~B & MASK))
 				E=$(( (B & C) | (NB & D) ))
-                                j=$i
-                                ;;
-                        1)
+				j=$i
+				;;
+			1)
 				local ND=$((~D & MASK))
 				E=$(( (B & D) | (C & ND) ))
-                                j=$(( ((i * 5) + 1) % 16 ))
-                                ;;
-                        2)
+				j=$(( ((i * 5) + 1) % 16 ))
+				;;
+			2)
 				E=$(( B ^ C ^ D ))
-                                j=$(( ((i * 3) + 5) % 16 ))
-                                ;;
-                        3)
+				j=$(( ((i * 3) + 5) % 16 ))
+				;;
+			3)
 				local ND=$((~D & MASK))
 				E=$((C ^ (B | ND)))
-                                j=$(( (i * 7) % 16 ))
-                                ;;
-                esac
+				j=$(( (i * 7) % 16 ))
+				;;
+		esac
 
-                local sum=$(( (A + E + K[i] + ${words[j]}) & MASK ))
-                local rot=${ rotate_left ${sum} ${S[i]}; }
-                local tmp=$D
-                D=$C
-                C=$B
-                B=$(( (B + rot) & MASK ))
-                A=$tmp
-        done
+		local sum=$(( (A + E + K[i] + ${words[j]}) & MASK ))
+		local rot=${ rotate_left ${sum} ${S[i]}; }
+		local tmp=$D
+		D=$C
+		C=$B
+		B=$(( (B + rot) & MASK ))
+		A=$tmp
+	done
 
 	state[0]=$(( ((state[0] + A) & MASK) ))
 	state[1]=$(( ((state[1] + B) & MASK) ))
