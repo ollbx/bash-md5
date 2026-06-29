@@ -98,7 +98,7 @@ md5_step() {
 				;;
 			3)
 				local ND=$((~D & MASK))
-				E=$((C ^ (B | ND)))
+				E=$(( C ^ (B | ND) ))
 				j=$(( (i * 7) % 16 ))
 				;;
 		esac
@@ -203,6 +203,13 @@ read_byte() {
 		echo $(( (1 - eof) * 16#80 ))
 		eof=1
 	fi
+
+	# TODO: read data in chunks, keeping the same interface.
+	#
+	# - 1: if no chunk is available, read one and reset index to 0.
+	# - 2: if index  < #chunk: extract byte and increase index.
+	# - 3: if index >= #chunk: clear the chunk and goto 1.
+	# - figure out the padding / EOF stuff to go along with this.
 }
 
 # ------------------------------------------------------------------------------
