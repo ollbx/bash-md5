@@ -194,8 +194,8 @@ read_byte() {
 	# sequences etc.
 	if LC_ALL=C IFS= read -rd '' -n 1 chr; then
 		# Echo the byte value. Note: when `read` encounters a null byte
-		# it will returns an empty string. `printf "%d" "'"` will then
-		# return 0.
+		# it will return an empty string. Conveniently `printf "%d" "'"`
+		# will then print 0.
 		printf '%d' "'${chr}"
 		((len++))
 	else
